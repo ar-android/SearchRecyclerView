@@ -38,11 +38,15 @@ public class PresenterMain {
      * @param query
      */
     public void loadData(String query) {
+        models = new ArrayList<>();
         mainView.setVisibilityProgressBar(View.VISIBLE);
         ApiService service = ApiBuilder.call();
         service.searchHotel(new InputItem(query)).enqueue(new Callback<List<ItemHotels>>() {
             @Override
             public void onResponse(Call<List<ItemHotels>> call, Response<List<ItemHotels>> response) {
+                for (ItemHotels data : response.body()){
+                    models.add(data);
+                }
                 mainView.setVisibilityProgressBar(View.GONE);
                 adapter = new RvAdapter<ItemHotels, ItemHotelHolder>(R.layout.item_hotels, ItemHotelHolder.class, ItemHotels.class, models) {
                     @Override
